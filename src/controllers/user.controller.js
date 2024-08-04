@@ -24,11 +24,18 @@ const registerUser = asyncHandler(async(req, res) => {
         throw new ApiError(409, "user with email or username already exists")
     }
 
-    //check for avatar & coverImg, check for avatar available in publiv/temp ie in our local server
+    //check for avatar, check for avatar available in publiv/temp ie in our local server
     const avatarLocalPath = req.files?.avatar[0]?.path
-    const coverImageLocalPath = req.files?.coverImage[0]?.path
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar file is required")
+    }
+
+    //check for coverImg, if coverImage is not available then give empty string otherwise give error of -
+    //can't read property of undefined
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
     }
 
     //upload them to cloudinary, avatar & coverImg
