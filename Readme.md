@@ -28,7 +28,7 @@ CMD
 7.
 .env
     PORT=8000
-    MONGODB_URI=mongodb+srv://learnbackend:learnbackend@learnbackend.vurd1bk.mongodb.net
+    MONGODB_URI=mongodb+srv://learnbackend:learnbackend@password.vursssd1bk.mongodb.net
 
 8.
 stablish connection with database
