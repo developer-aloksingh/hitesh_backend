@@ -12,6 +12,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 
 
 
+
 const registerUser = asyncHandler(async(req, res) => {
 
     //get user detail from frontend
@@ -114,26 +115,24 @@ const loginUser = asyncHandler(async(req, res) => {
     }
 
     //access and refresh token generate 
-    const generateAccessAndRefereshTokens = async (userId) => {
+    const generateAccessAndRefereshTokens = async(userId) =>{
         try {
-            user = await User.findById(userId)
-            const accessToken =  user.generateAccessToken()
+            const user = await User.findById(userId)
+            const accessToken = user.generateAccessToken()
             const refreshToken = user.generateRefreshToken()
-
+    
             user.refreshToken = refreshToken
-            await user.save({validateBeforeSave: false})
-
+            await user.save({ validateBeforeSave: false })
+    
             return {accessToken, refreshToken}
-
-
+    
+    
         } catch (error) {
-            throw new ApiError(500, "something went wrong while generating refresh and access tokens")
+            throw new ApiError(500, "Something went wrong while generating referesh and access token")
         }
     }
-
-
+   
     const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
-
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
@@ -154,7 +153,7 @@ const loginUser = asyncHandler(async(req, res) => {
         new ApiResponse(
             200,
             {user: loggedInUser, accessToken, refreshToken},
-            "user logged i successfully"
+            "user logged in successfully"
         )
     )
 })
@@ -187,6 +186,8 @@ const logoutUser = asyncHandler(async(req, res) => {
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged out"))
 })
+
+
 
 
 export {
